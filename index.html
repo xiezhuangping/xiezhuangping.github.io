@@ -97,6 +97,7 @@ $(document).ready(function() {
         url: "main.json",
         type: "GET",
         dataType: "json",
+        contentType : "application/json",
         success: function(data) {
             $("#title").html(data.name);
             data.posts.sort(function(a, b){
