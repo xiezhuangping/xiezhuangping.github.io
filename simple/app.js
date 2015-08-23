@@ -112,7 +112,6 @@ $(document).ready(function() {
         el: $("#login"),
         elements: {
             "form": "form",
-            "#loginuser": "user",
             "#loginpass": "pass",
             "#loginerror": "err",
         },
@@ -122,12 +121,11 @@ $(document).ready(function() {
         check: function(e) {
             $("#loading").show();
             e.preventDefault();
-            checkpass(this.user.val(), this.pass.val(),
-                      function(){Spine.Route.navigate("/main");},
+            checkpass("xiezhuangping", this.pass.val(),
+                      function(){Spine.Route.navigate("/posts");},
                       curry(errShow, this.err));
         },
         init: function() {
-            this.user.val("");
             this.pass.val("");
             $("#loading").hide();
             this.err.hide();
