@@ -25,40 +25,157 @@
 	</div>
 <div id="md" style="display: none;">
 <!-- markdown -->
+ 本文属于<a href="https://github.com/NilStack" target="_blank">NilStack </a>写作的《Apple TV app 开发教程》的第一篇。
+
+翻译讲究信达雅，因为时间和水平有限，部分地方在自己理解的基础上翻译的。
+
 苹果公司发布tvOS 和新一代Apple TV 后，Apple TV 成了另一个开发平台。
 
 程序员要做的第一件事，自然是开发一个“Hello Apple TV！”程序。
 
 先从苹果开发者网站上下载Xcode 7.1 beta 并安装。启动Xcode 后，在选择模板的界面，可以看到增加了一个tvOS 分类，选择“Single View Application”。
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/tvOS-new-project-template.png" alt="tvOS-new-project-template"></img>
 
 接下来的步骤和创建iOS 应用是一模一样的，生成的文件你应该也很熟悉。
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/tvOS-new-project-files.png" alt="tvOS-new-project-files"></img>
 
 我们在ViewController 的实现文件里增加UI 元素和业务逻辑。我们简单的用一个Label 显示“Hello TV！”，并且在Apple TV 遥控器里点击“播放/暂停”按钮后将改变文字的颜色。
+~~~~{objectivec}
+//
+//  ViewController.m
+//  HelloTV
+//
+//  Created by Peng on 9/10/15.
+//  Copyright © 2015 Peng. All rights reserved.
+//
 
+#import "ViewController.h"
+
+@interface ViewController ()
+
+@property (nonatomic) UILabel *label;
+@property (nonatomic) UITapGestureRecognizer* tapRecognizer;
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.label = [[UILabel alloc] init];
+    self.label.center = self.view.center;
+    self.label.text = @"Hello TV!";
+    self.label.textColor = [UIColor blackColor];
+    self.label.font = [UIFont systemFontOfSize:90.0];
+    [self.label sizeToFit];
+    [self.view addSubview:self.label];
+    
+    UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
+    tapRecognizer.allowedPressTypes = @[[NSNumber numberWithInteger:UIPressTypePlayPause] ];
+    [self.view addGestureRecognizer:tapRecognizer];
+    
+}
+
+- (void)tapped
+{
+    self.label.textColor = [UIColor redColor];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
+~~~~
 我们使用手势而不是Button，是因为虽然tvOS app 的代码和iOS app的代码非常相似，但是交互的逻辑差别很大。我们稍晚一点会深入这一主题。
 
 编译后结果是这样的：
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/HelloTV2.gif" alt="HelloTV2"></img>
 
 完整的工程见<a href="https://github.com/NilStack/HelloAppleTV" target="_blank">GitHub</a>。
+
+原文<a href="http://pragma.tv/jekyll/update/2015/09/10/Hello-Apple-TV.html" target="_blank">在此</a>。
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
 <!-- content -->
+<p>本文属于<a href="https://github.com/NilStack" target="_blank">NilStack </a>写作的《Apple TV app 开发教程》的第一篇。</p>
+
+<p>翻译讲究信达雅，因为时间和水平有限，部分地方在自己理解的基础上翻译的。</p>
+
 <p>苹果公司发布tvOS 和新一代Apple TV 后，Apple TV 成了另一个开发平台。</p>
 
 <p>程序员要做的第一件事，自然是开发一个“Hello Apple TV！”程序。</p>
 
-<p>先从苹果开发者网站上下载Xcode 7.1 beta 并安装。启动Xcode 后，在选择模板的界面，可以看到增加了一个tvOS 分类，选择“Single View Application”。</p>
+<p>先从苹果开发者网站上下载Xcode 7.1 beta 并安装。启动Xcode 后，在选择模板的界面，可以看到增加了一个tvOS 分类，选择“Single View Application”。
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/tvOS-new-project-template.png" alt="tvOS-new-project-template"></p>
 
-<p>接下来的步骤和创建iOS 应用是一模一样的，生成的文件你应该也很熟悉。</p>
+<p>接下来的步骤和创建iOS 应用是一模一样的，生成的文件你应该也很熟悉。
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/tvOS-new-project-files.png" alt="tvOS-new-project-files"></p>
 
-<p>我们在ViewController 的实现文件里增加UI 元素和业务逻辑。我们简单的用一个Label 显示“Hello TV！”，并且在Apple TV 遥控器里点击“播放/暂停”按钮后将改变文字的颜色。</p>
+<p>我们在ViewController 的实现文件里增加UI 元素和业务逻辑。我们简单的用一个Label 显示“Hello TV！”，并且在Apple TV 遥控器里点击“播放/暂停”按钮后将改变文字的颜色。
+</p><pre><code class="language-objectivec">//
+//  ViewController.m
+//  HelloTV
+//
+//  Created by Peng on 9/10/15.
+//  Copyright © 2015 Peng. All rights reserved.
+//<p></p>
 
-<p>我们使用手势而不是Button，是因为虽然tvOS app 的代码和iOS app的代码非常相似，但是交互的逻辑差别很大。我们稍晚一点会深入这一主题。</p>
+<h1 id="importviewcontrollerh">import "ViewController.h"</h1>
 
-<p>编译后结果是这样的：</p>
+<p>@interface ViewController ()</p>
+
+<p>@property (nonatomic) UILabel <em>label;
+@property (nonatomic) UITapGestureRecognizer</em> tapRecognizer;</p>
+
+<p>@end</p>
+
+<p>@implementation ViewController</p>
+
+<ul>
+<li><p>(void)viewDidLoad {
+[super viewDidLoad];
+// Do any additional setup after loading the view, typically from a nib.</p>
+
+<p>self.label = [[UILabel alloc] init];
+self.label.center = self.view.center;
+self.label.text = @"Hello TV!";
+self.label.textColor = [UIColor blackColor];
+self.label.font = [UIFont systemFontOfSize:90.0];
+[self.label sizeToFit];
+[self.view addSubview:self.label];</p>
+
+<p>UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
+tapRecognizer.allowedPressTypes = @[[NSNumber numberWithInteger:UIPressTypePlayPause] ];
+[self.view addGestureRecognizer:tapRecognizer];</p></li>
+</ul>
+
+<p>}</p>
+
+<ul>
+<li><p>(void)tapped
+{
+self.label.textColor = [UIColor redColor];
+}</p></li>
+<li><p>(void)didReceiveMemoryWarning {
+[super didReceiveMemoryWarning];
+// Dispose of any resources that can be recreated.
+}</p></li>
+</ul>
+
+</code><p><code class="language-objectivec">@end
+</code></p></pre>我们使用手势而不是Button，是因为虽然tvOS app 的代码和iOS app的代码非常相似，但是交互的逻辑差别很大。我们稍晚一点会深入这一主题。<p></p>
+
+<p>编译后结果是这样的：
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/HelloTV2.gif" alt="HelloTV2"></p>
 
 <p>完整的工程见<a href="https://github.com/NilStack/HelloAppleTV" target="_blank">GitHub</a>。</p>
+
+<p>原文<a href="http://pragma.tv/jekyll/update/2015/09/10/Hello-Apple-TV.html" target="_blank">在此</a>。</p>
 <!-- content end -->
 </div>
 <br>
