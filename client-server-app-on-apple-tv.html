@@ -40,51 +40,66 @@
 现在我们的本地app 相当于一个外壳，我们编译一下。
 ~~~~{objectivec}
 //
-// AppDelegate.m
-// TVClientServerApp
+//  AppDelegate.m
+//  TVClientServerApp
 //
-// Created by Peng on 9/11/15.
-// Copyright © 2015 Peng. All rights reserved.
+//  Created by Peng on 9/11/15.
+//  Copyright © 2015 Peng. All rights reserved.
 //
+
 #import "AppDelegate.h"
 #import <TVMLKit/TVMLKit.h>
+
 @interface AppDelegate () <TVApplicationControllerDelegate>
+
 @property (nonatomic) TVApplicationController *controller;
+
 @end
+
 @implementation AppDelegate
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-// create context
-TVApplicationControllerContext *context = [[TVApplicationControllerContext alloc] init];
-// main Javascript file url
-NSURL *url = [NSURL URLWithString:@"https://db.tt/Y5Aup5w9"];
-context.javaScriptApplicationURL = url;
-// transfer options to Javascript context, we can get these options in App.onLaunch
-// we can also define our own key/values
-if (launchOptions) {
-NSMutableDictionary *options = [NSMutableDictionary dictionary];
-[launchOptions enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL * _Nonnull stop) {
-options[(NSString *)key] = obj;
-}];
-context.launchOptions = [options copy];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    
+    // create context
+    TVApplicationControllerContext *context = [[TVApplicationControllerContext alloc] init];
+    
+    // main Javascript file url
+    NSURL *url = [NSURL URLWithString:@"https://db.tt/Y5Aup5w9"];
+    context.javaScriptApplicationURL = url;
+    
+    // transfer options to Javascript context, we can get these options in App.onLaunch
+    // we can also define our own key/values
+    if (launchOptions) {
+        NSMutableDictionary *options = [NSMutableDictionary dictionary];
+        [launchOptions enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            options[(NSString *)key] = obj;
+        }];
+        context.launchOptions = [options copy];
+    }
+    
+    // create controller
+    self.controller = [[TVApplicationController alloc] initWithContext:context window:self.window delegate:self];
+    
+    return YES;
 }
-// create controller
-self.controller = [[TVApplicationController alloc] initWithContext:context window:self.window delegate:self];
-return YES;
-}
+
 #pragma TVApplicationControllerDelegate
-- (void)appController:(TVApplicationController *)appController didFinishLaunchingWithOptions:(NSDictionary<NSString *,id> *)options
-{
-NSLog(@"did Finish Launching");
+
+- (void)appController:(TVApplicationController *)appController didFinishLaunchingWithOptions:(NSDictionary<NSString *,id> *)options {
+    NSLog(@"did Finish Launching");
 }
-- (void)appController:(TVApplicationController *)appController didFailWithError:(NSError *)error
-{
-NSLog(@"did Fail With Error : %@", error);
+
+- (void)appController:(TVApplicationController *)appController didFailWithError:(NSError *)error {
+    NSLog(@"did Fail With Error : %@", error);
 }
-- (void)appController:(TVApplicationController *)appController didStopWithOptions:(NSDictionary<NSString *,id> *)options
-{
-NSLog(@"did Stop");
+
+- (void)appController:(TVApplicationController *)appController didStopWithOptions:(NSDictionary<NSString *,id> *)options {
+     NSLog(@"did Stop");
 }
+
 @end
 ~~~~
 
@@ -126,51 +141,66 @@ python -m SimpleHTTPServer [port]
 <p>现在我们的本地app 相当于一个外壳，我们编译一下。</p>
 
 <pre class=" language-objectivec" data-language="Objective-C"><code class=" language-objectivec"><span class="token comment" spellcheck="true">//</span><span class="token lf">
-</span><span class="token comment" spellcheck="true">// AppDelegate.m</span><span class="token lf">
-</span><span class="token comment" spellcheck="true">// TVClientServerApp</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//  AppDelegate.m</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//  TVClientServerApp</span><span class="token lf">
 </span><span class="token comment" spellcheck="true">//</span><span class="token lf">
-</span><span class="token comment" spellcheck="true">// Created by Peng on 9/11/15.</span><span class="token lf">
-</span><span class="token comment" spellcheck="true">// Copyright © 2015 Peng. All rights reserved.</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//  Created by Peng on 9/11/15.</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//  Copyright © 2015 Peng. All rights reserved.</span><span class="token lf">
 </span><span class="token comment" spellcheck="true">//</span><span class="token lf">
+</span><span class="token lf">
 </span><span class="token macro property">#import "AppDelegate.h"</span><span class="token lf">
 </span><span class="token macro property">#import &lt;TVMLKit/TVMLKit.h&gt;</span><span class="token lf">
+</span><span class="token lf">
 </span><span class="token keyword keyword-@interface">@interface</span> AppDelegate <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span>TVApplicationControllerDelegate<span class="token operator">&gt;</span><span class="token lf">
+</span><span class="token lf">
 </span><span class="token keyword keyword-@property">@property</span> <span class="token punctuation">(</span>nonatomic<span class="token punctuation">)</span> TVApplicationController <span class="token operator">*</span>controller<span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
 </span><span class="token keyword keyword-@end">@end</span><span class="token lf">
+</span><span class="token lf">
 </span><span class="token keyword keyword-@implementation">@implementation</span> AppDelegate<span class="token lf">
+</span><span class="token lf">
+</span><span class="token lf">
 </span><span class="token operator">-</span> <span class="token punctuation">(</span>BOOL<span class="token punctuation">)</span>application<span class="token punctuation">:</span><span class="token punctuation">(</span>UIApplication <span class="token operator">*</span><span class="token punctuation">)</span>application didFinishLaunchingWithOptions<span class="token punctuation">:</span><span class="token punctuation">(</span>NSDictionary <span class="token operator">*</span><span class="token punctuation">)</span>launchOptions <span class="token punctuation">{</span><span class="token lf">
-</span><span class="token keyword keyword-self">self</span><span class="token punctuation">.</span>window <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>UIWindow alloc<span class="token punctuation">]</span> initWithFrame<span class="token punctuation">:</span><span class="token punctuation">[</span>UIScreen mainScreen<span class="token punctuation">]</span><span class="token punctuation">.</span>bounds<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
-</span><span class="token comment" spellcheck="true">// create context</span><span class="token lf">
-</span>TVApplicationControllerContext <span class="token operator">*</span>context <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>TVApplicationControllerContext alloc<span class="token punctuation">]</span> init<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
-</span><span class="token comment" spellcheck="true">// main Javascript file url</span><span class="token lf">
-</span>NSURL <span class="token operator">*</span>url <span class="token operator">=</span> <span class="token punctuation">[</span>NSURL URLWithString<span class="token punctuation">:</span><span class="token string">@"<a class="token url-link" href="https://db.tt/Y5Aup5w9">https://db.tt/Y5Aup5w9</a>"</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
-</span>context<span class="token punctuation">.</span>javaScriptApplicationURL <span class="token operator">=</span> url<span class="token punctuation">;</span><span class="token lf">
-</span><span class="token comment" spellcheck="true">// transfer options to Javascript context, we can get these options in App.onLaunch</span><span class="token lf">
-</span><span class="token comment" spellcheck="true">// we can also define our own key/values</span><span class="token lf">
-</span><span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>launchOptions<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token lf">
-</span>NSMutableDictionary <span class="token operator">*</span>options <span class="token operator">=</span> <span class="token punctuation">[</span>NSMutableDictionary dictionary<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
-</span><span class="token punctuation">[</span>launchOptions enumerateKeysAndObjectsUsingBlock<span class="token punctuation">:</span><span class="token operator">^</span><span class="token punctuation">(</span>id _Nonnull key<span class="token punctuation">,</span> id _Nonnull obj<span class="token punctuation">,</span> BOOL <span class="token operator">*</span> _Nonnull stop<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token lf">
-</span>options<span class="token punctuation">[</span><span class="token punctuation">(</span>NSString <span class="token operator">*</span><span class="token punctuation">)</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> obj<span class="token punctuation">;</span><span class="token lf">
-</span><span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
-</span>context<span class="token punctuation">.</span>launchOptions <span class="token operator">=</span> <span class="token punctuation">[</span>options copy<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span>    <span class="token keyword keyword-self">self</span><span class="token punctuation">.</span>window <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>UIWindow alloc<span class="token punctuation">]</span> initWithFrame<span class="token punctuation">:</span><span class="token punctuation">[</span>UIScreen mainScreen<span class="token punctuation">]</span><span class="token punctuation">.</span>bounds<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// create context</span><span class="token lf">
+</span>    TVApplicationControllerContext <span class="token operator">*</span>context <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>TVApplicationControllerContext alloc<span class="token punctuation">]</span> init<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// main Javascript file url</span><span class="token lf">
+</span>    NSURL <span class="token operator">*</span>url <span class="token operator">=</span> <span class="token punctuation">[</span>NSURL URLWithString<span class="token punctuation">:</span><span class="token string">@"<a class="token url-link" href="https://db.tt/Y5Aup5w9">https://db.tt/Y5Aup5w9</a>"</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>    context<span class="token punctuation">.</span>javaScriptApplicationURL <span class="token operator">=</span> url<span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// transfer options to Javascript context, we can get these options in App.onLaunch</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// we can also define our own key/values</span><span class="token lf">
+</span>    <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>launchOptions<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token lf">
+</span>        NSMutableDictionary <span class="token operator">*</span>options <span class="token operator">=</span> <span class="token punctuation">[</span>NSMutableDictionary dictionary<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>        <span class="token punctuation">[</span>launchOptions enumerateKeysAndObjectsUsingBlock<span class="token punctuation">:</span><span class="token operator">^</span><span class="token punctuation">(</span>id  _Nonnull key<span class="token punctuation">,</span> id  _Nonnull obj<span class="token punctuation">,</span> BOOL <span class="token operator">*</span> _Nonnull stop<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token lf">
+</span>            options<span class="token punctuation">[</span><span class="token punctuation">(</span>NSString <span class="token operator">*</span><span class="token punctuation">)</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> obj<span class="token punctuation">;</span><span class="token lf">
+</span>        <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>        context<span class="token punctuation">.</span>launchOptions <span class="token operator">=</span> <span class="token punctuation">[</span>options copy<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token punctuation">}</span><span class="token lf">
+</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// create controller</span><span class="token lf">
+</span>    <span class="token keyword keyword-self">self</span><span class="token punctuation">.</span>controller <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>TVApplicationController alloc<span class="token punctuation">]</span> initWithContext<span class="token punctuation">:</span>context window<span class="token punctuation">:</span><span class="token keyword keyword-self">self</span><span class="token punctuation">.</span>window delegate<span class="token punctuation">:</span><span class="token keyword keyword-self">self</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span>    <span class="token keyword keyword-return">return</span> YES<span class="token punctuation">;</span><span class="token lf">
 </span><span class="token punctuation">}</span><span class="token lf">
-</span><span class="token comment" spellcheck="true">// create controller</span><span class="token lf">
-</span><span class="token keyword keyword-self">self</span><span class="token punctuation">.</span>controller <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>TVApplicationController alloc<span class="token punctuation">]</span> initWithContext<span class="token punctuation">:</span>context window<span class="token punctuation">:</span><span class="token keyword keyword-self">self</span><span class="token punctuation">.</span>window delegate<span class="token punctuation">:</span><span class="token keyword keyword-self">self</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
-</span><span class="token keyword keyword-return">return</span> YES<span class="token punctuation">;</span><span class="token lf">
-</span><span class="token punctuation">}</span><span class="token lf">
+</span><span class="token lf">
 </span><span class="token macro property">#pragma TVApplicationControllerDelegate</span><span class="token lf">
-</span><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>appController<span class="token punctuation">:</span><span class="token punctuation">(</span>TVApplicationController <span class="token operator">*</span><span class="token punctuation">)</span>appController didFinishLaunchingWithOptions<span class="token punctuation">:</span><span class="token punctuation">(</span>NSDictionary<span class="token operator">&lt;</span>NSString <span class="token operator">*</span><span class="token punctuation">,</span>id<span class="token operator">&gt;</span> <span class="token operator">*</span><span class="token punctuation">)</span>options<span class="token lf">
-</span><span class="token punctuation">{</span><span class="token lf">
-</span><span class="token function">NSLog</span><span class="token punctuation">(</span><span class="token string">@"did Finish Launching"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>appController<span class="token punctuation">:</span><span class="token punctuation">(</span>TVApplicationController <span class="token operator">*</span><span class="token punctuation">)</span>appController didFinishLaunchingWithOptions<span class="token punctuation">:</span><span class="token punctuation">(</span>NSDictionary<span class="token operator">&lt;</span>NSString <span class="token operator">*</span><span class="token punctuation">,</span>id<span class="token operator">&gt;</span> <span class="token operator">*</span><span class="token punctuation">)</span>options <span class="token punctuation">{</span><span class="token lf">
+</span>    <span class="token function">NSLog</span><span class="token punctuation">(</span><span class="token string">@"did Finish Launching"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token lf">
 </span><span class="token punctuation">}</span><span class="token lf">
-</span><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>appController<span class="token punctuation">:</span><span class="token punctuation">(</span>TVApplicationController <span class="token operator">*</span><span class="token punctuation">)</span>appController didFailWithError<span class="token punctuation">:</span><span class="token punctuation">(</span>NSError <span class="token operator">*</span><span class="token punctuation">)</span>error<span class="token lf">
-</span><span class="token punctuation">{</span><span class="token lf">
-</span><span class="token function">NSLog</span><span class="token punctuation">(</span><span class="token string">@"did Fail With Error : %@"</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>appController<span class="token punctuation">:</span><span class="token punctuation">(</span>TVApplicationController <span class="token operator">*</span><span class="token punctuation">)</span>appController didFailWithError<span class="token punctuation">:</span><span class="token punctuation">(</span>NSError <span class="token operator">*</span><span class="token punctuation">)</span>error <span class="token punctuation">{</span><span class="token lf">
+</span>    <span class="token function">NSLog</span><span class="token punctuation">(</span><span class="token string">@"did Fail With Error : %@"</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token lf">
 </span><span class="token punctuation">}</span><span class="token lf">
-</span><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>appController<span class="token punctuation">:</span><span class="token punctuation">(</span>TVApplicationController <span class="token operator">*</span><span class="token punctuation">)</span>appController didStopWithOptions<span class="token punctuation">:</span><span class="token punctuation">(</span>NSDictionary<span class="token operator">&lt;</span>NSString <span class="token operator">*</span><span class="token punctuation">,</span>id<span class="token operator">&gt;</span> <span class="token operator">*</span><span class="token punctuation">)</span>options<span class="token lf">
-</span><span class="token punctuation">{</span><span class="token lf">
-</span><span class="token function">NSLog</span><span class="token punctuation">(</span><span class="token string">@"did Stop"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>appController<span class="token punctuation">:</span><span class="token punctuation">(</span>TVApplicationController <span class="token operator">*</span><span class="token punctuation">)</span>appController didStopWithOptions<span class="token punctuation">:</span><span class="token punctuation">(</span>NSDictionary<span class="token operator">&lt;</span>NSString <span class="token operator">*</span><span class="token punctuation">,</span>id<span class="token operator">&gt;</span> <span class="token operator">*</span><span class="token punctuation">)</span>options <span class="token punctuation">{</span><span class="token lf">
+</span>     <span class="token function">NSLog</span><span class="token punctuation">(</span><span class="token string">@"did Stop"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token lf">
 </span><span class="token punctuation">}</span><span class="token lf">
+</span><span class="token lf">
 </span><span class="token keyword keyword-@end">@end</span><span class="token lf">
 </span></code></pre>
 
