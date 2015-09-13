@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+Apple TV 的交互和iOS 有很大不同，因为Apple TV 并没有一个可以触摸的屏幕。用户只能通过遥控器和Apple TV 交互。
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/remote_callouts_2x.png" alt="remote_callouts">
+(1) 可触摸区域。使用轻扫手势导航，按下选择，按住弹出菜单。
+(2)MENU，回到上一个菜单。
+(3)Siri/搜索，在支持Siri 遥控的国家的用户按住该按键可以通过Siri 遥控；其他国家的用户按下该按键来搜索。
+(4)播放/暂停
+(5)Home，按一次回到主屏幕，按两次查看当前打开的app。按住让设备睡眠。
+(6)音量调整
+(7)Lightning 接口，插上可以充电。
+
+Apple TV的交互主要包含两个阶段：焦点和动作。我们想要点某个按钮，必须先导航到这个按钮上，然后才能点击它。导航到这个按钮上，这个按钮也就获得了焦点。因为我们并不能像在PC 桌面上用鼠标或手势点击屏幕。
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/focus.gif" alt="focus">
+在上边的视频片段里，一开始是设置获得焦点。可以看到，它的图标带有阴影，图标也是浮在整个屏幕上的。按下option 键后鼠标在遥控器上从左向右移动，焦点也就相应的一道了紧邻设置右侧的图标上。鼠标的移动对应着真实遥控器上的轻扫手势。我们让焦点回到设置，轻点一下鼠标就打开了设置这个app。
+
+现在我们应该清楚Apple TV 的焦点是怎么回事了。Apple TV 交互的重点之一就是焦点。它很像iOS 里的相应链(response chain)。我们下一篇文章再细说。
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>Apple TV 的交互和iOS 有很大不同，因为Apple TV 并没有一个可以触摸的屏幕。用户只能通过遥控器和Apple TV 交互。
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/remote_callouts_2x.png" alt="remote_callouts">
+(1) 可触摸区域。使用轻扫手势导航，按下选择，按住弹出菜单。
+(2)MENU，回到上一个菜单。
+(3)Siri/搜索，在支持Siri 遥控的国家的用户按住该按键可以通过Siri 遥控；其他国家的用户按下该按键来搜索。
+(4)播放/暂停
+(5)Home，按一次回到主屏幕，按两次查看当前打开的app。按住让设备睡眠。
+(6)音量调整
+(7)Lightning 接口，插上可以充电。</p>
+
+<p>Apple TV的交互主要包含两个阶段：焦点和动作。我们想要点某个按钮，必须先导航到这个按钮上，然后才能点击它。导航到这个按钮上，这个按钮也就获得了焦点。因为我们并不能像在PC 桌面上用鼠标或手势点击屏幕。
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/focus.gif" alt="focus">
+在上边的视频片段里，一开始是设置获得焦点。可以看到，它的图标带有阴影，图标也是浮在整个屏幕上的。按下option 键后鼠标在遥控器上从左向右移动，焦点也就相应的一道了紧邻设置右侧的图标上。鼠标的移动对应着真实遥控器上的轻扫手势。我们让焦点回到设置，轻点一下鼠标就打开了设置这个app。</p>
+
+<p>现在我们应该清楚Apple TV 的焦点是怎么回事了。Apple TV 交互的重点之一就是焦点。它很像iOS 里的相应链(response chain)。我们下一篇文章再细说。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "interaction-with-apple-tv-i-focus.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
