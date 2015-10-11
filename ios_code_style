@@ -1,0 +1,507 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+代码风格之争由来已久。
+
+网络上已经有很多关于这方面的文章，说得都挺有道理，不过让人莫衷一是。财大气粗的大公司都有自己的代码风格，那么中小型公司该怎么做？代码风格有优劣之分么？什么样的代码风格才是好的？我究竟该用什么样的代码风格？怎么保证团队成员都遵守代码风格？
+
+ 本文从几个方面阐述代码风格，看完本文后，这几个问题你应该有了自己的答案。本文的一些思想也适用其他语言。
+
+<b>一，代码风格的主要内容和分类</b>
+
+代码风格的主要内容，对应着编程语言的主要语法成分。一般来说有变量，顺序语句，分支语句，循环语句，函数定义，函数实现，类定义，类实现，接口，头文件等等。
+
+<<代码大全>>一书有详细讨论各个语法成分代码风格的优劣。编程不读<<代码大全>> ，枉做程序员。
+
+代码风格分类一般是按照变量和函数的命名方式来分的。一般有匈牙利命名法（dwTotalCount），骆驼命名法（totalCount），帕斯卡（pascal）命名法（TotalCount），下划线命名法（total_count）四种。
+
+代码风格另一种分类方式是按大括号的位置来分的，一般分为紧凑型，宽松型。
+
+举个例子：
+
+宽松型
+~~~~{objectivec}
+if (gotData)
+{
+   // …
+}
+else
+{
+   // …
+}
+ ~~~~
+
+紧凑型
+~~~~{objectivec}
+if (gotData) {
+    // …
+} else {
+    // …
+}
+ ~~~~
+
+微软一般都用宽松型，我刚编程那会用的VC6，都是宽松型的，因此先入为主的认为所有代码都应该是宽松型的。当时看开源代码都不习惯，因为开源代码一般都是紧凑型的。紧凑型的好处明显易见 —— 一屏显示的代码更多。
+
+<b>二，代码风格的优劣</b>
+
+什么样的代码风格是最好的？
+
+基于一些现实的原因，没有一份代码风格能声称自己是最好的。比如说，你觉得谷歌的objc 代码风格很好，但是它的缩进是2 个空格而不是4 个空格的，有人不习惯，看着就别扭。另外，对于代码风格意识不强的程序员，看到洋洋洒洒那么多规定，他只能说“臣妾办不到啊”。
+
+虽然如此你还是能拟出一份适合你的团队的代码风格，制定代码风格就像娶老婆，适合的就是最好的。
+
+那么好的代码风格都有什么特征呢？
+
+1.好的代码风格是统一的。统一意味着去个性化，随便找一段代码都分不清是团队里某个成员写的；相反的如果你能一下子就分辨某段代码是某个人写的，那就和这个原则背道而驰了。
+
+2.好的代码风格容易遵守。如果团队代码风格意识都很强那么你可以多规定一些内容，如果不那么强那么你只能强制基本的东西，其他的可以定义为建议。这点非常重要，如果某个规定给团队带来的成本太高，那么这个规定注定会被抛弃。
+
+3.好的代码风格是强制的。某些规定往往栽倒在人性的弱点里，这个弱点是懒。好的代码风格必须要有某种强制，可以是人工代码审查，提交前自动检查，或者领导者的三令五申来强制实施。前端代码每日提交量很高，少数人的不遵守规则，足以让规定破产。
+
+4.好的代码风格是和平台相关的。如果你为Windows 平台写代码，那你应该用宽松型的匈牙利命名法。如果你为Mac，iOS，Linux，Unix 写代码，那你应该用紧凑型的命名法。入乡随俗很重要。
+
+5.好的代码风格让代码更容易被阅读，被理解，被重构。
+
+<b>三，推荐的objc 代码风格</b>
+
+1.主要风格
+
+下边是Xcode 生成的代码，是紧凑型的骆驼命名法，因此我们最好和它保持一致。
+~~~~{objectivec}
+//
+//  ViewController.m
+//  test
+//
+//  Created by test on 15/9/30.
+//  Copyright © 2015年 test. All rights reserved.
+//
+ 
+#import "ViewController.h"
+ 
+@interface ViewController ()
+ 
+@end
+ 
+@implementation ViewController
+ 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+}
+ 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+ 
+@end
+ ~~~~
+
+2.块
+
+大多数程序设计语言里，代码块指的是一对大括号包围起来的代码。
+
+这里的块是指逻辑意义上的块。
+
+举个例子:
+~~~~{objectivec}
+- (void)getData:(NSDictionary *)parameter {
+    int  libraryId = [[parameter objectForKey:@"libraryId"] intValue];
+    NSNumber *jobId = nil;
+    id  jobObj = [_statuDictionary objectForKey:@"jobId"];
+    if ([jobObj isKindOfClass:[NSNumber class]]) {
+        jobId = (NSNumber *)jobObj;
+    }
+    if (jobId) {
+        [self cancalJobById:jobId];
+    }
+    int newJobId = GetData(libraryId, CallbackGetData);
+    [_statuDictionary setValue:newJobId forKey:@"jobId"];
+
+    ….
+}
+~~~~
+
+可以用空行把这个函数分成两个块
+~~~~{objectivec}
+- (void)getData:(NSDictionary *)parameter {
+    // 块1，先取消上一次的job
+    NSNumber *jobId = nil;
+    id  jobObj = [_statuDictionary objectForKey:@"jobId"];
+    if ([jobObj isKindOfClass:[NSNumber class]]) {
+        jobId = (NSNumber *)jobObj;
+    }
+    if (jobId) {
+        CancalJobById(jobId);
+    }
+
+    // 块2， 创建一个新的job
+    // 因为libraryId 这个变量在这个块里才用到，所以把它挪到这里，实际上缩小了它逻辑意义上的生存周期。
+    // 变量使用到才定义，我管这个叫懒人法则。
+    int  libraryId = [[parameter objectForKey:@"libraryId"] intValue];
+    int newJobId = GetData(libraryId, CallbackGetData);
+    [_statuDictionary setValue:newJobId forKey:@"jobId"];
+
+    ….
+}
+~~~~
+
+另外，在函数之间，类之间合理加空行，善待你我的双眼。 
+
+合理使用#pragma mark - 把同类函数分块，便于查找和阅读代码。
+
+3.注释
+
+只写必要的注释，如用于生成文档的注释，说明复杂算法或思路，要注意的问题，容易犯的错误等
+
+屏蔽代码应当使用宏，而不是把代码注释掉
+
+4.其他
+
+其他的部分可以从苹果，谷歌等大公司的代码风格里摘录，重要的是团队里的成员一致认可这些规定。
+
+
+<b>四，最佳实践 </b>
+
+这里我介绍一下现在我们在用的一套流程。
+
+我们主要依靠Xcode 的BBUncrustifyPlugin 插件来保证代码风格的实施。
+
+BBUncrustifyPlugin 是一个代码格式化插件。你可以通过阿卡拉（Alcatraz）插件来安装BBUncrustifyPlugin 插件。阿卡拉本身也是一个Xcode 插件，它的主要功能是管理其他Xcode 插件。 
+
+BBUncrustifyPlugin插件支持自定义代码风格，可以通过<a href="https://github.com/ryanmaxwell/UncrustifyX">UncrustifyX</a> 编辑。我们在用的代码风格在<a href="https://github.com/xiezhuangping/uncrustify_config">这里</a>，不过目前它还不是很完善。
+
+主要的流程如下：
+
+第一步，你需要合并分支，稳定代码，找一个合适的时机开始。
+
+第二步，如果安装了其他代码风格插件如ClangFormat 等需要先卸载，以便避免和BBUncrustifyPlugin 冲突。
+
+第三步，安装和配置BBUncrustifyPlugin 插件。
+
+1.先运行以下命令安装阿卡拉插件
+~~~~{objectivec}
+curl -fsSL https://raw.githubusercontent.com/supermarin/Alcatraz/deploy/Scripts/install.sh | sh
+~~~~
+
+2.重启Xcode，在弹出的提示框选择允许加载插件，然后选择Xcode 菜单项 Window > Package Manager，在弹出窗里找到BBUncrustifyPlugin 安装即可。
+
+3.选择Xcode 菜单项 Edit > Format Code > BBUncrustifyPluginRefrences…
+在弹出的对话框里，修改以下设置项
+
+<img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/uncrustify_config.png" alt="uncrustify_config">
+
+<b>特别注意勾选"Perform Format on Save of a Source code File"，这个选项很重要，我们依赖它来纠正不合规范的代码。</b> 
+
+4.拷贝Uncrustify 配置文件uncrustify.cfg 到目录~/.uncrustify/ 下。
+
+第四步，使用Uncrustify 插件格式化所有代码，然后提交。
+
+1.先在Xcode 左侧的文件视图面板里选择所有的源代码文件，然后选择Xcode 菜单项 Edit > Format Code > Format Selected Files 即可格式化所有代码。
+
+2.提交到svn 或者git。
+
+这一步很有必要，如果不这么做，以后的每一次提交都可能会包含代码风格的变化。
+
+
+按照这个流程，每当小组内有不合规范的代码风格出现时，会被自动纠正。
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>代码风格之争由来已久。</p>
+
+<p>网络上已经有很多关于这方面的文章，说得都挺有道理，不过让人莫衷一是。财大气粗的大公司都有自己的代码风格，那么中小型公司该怎么做？代码风格有优劣之分么？什么样的代码风格才是好的？我究竟该用什么样的代码风格？怎么保证团队成员都遵守代码风格？</p>
+
+<p> 本文从几个方面阐述代码风格，看完本文后，这几个问题你应该有了自己的答案。本文的一些思想也适用其他语言。</p>
+
+<p><b>一，代码风格的主要内容和分类</b></p>
+
+<p>代码风格的主要内容，对应着编程语言的主要语法成分。一般来说有变量，顺序语句，分支语句，循环语句，函数定义，函数实现，类定义，类实现，接口，头文件等等。</p>
+
+<p>&lt;&lt;代码大全&gt;&gt;一书有详细讨论各个语法成分代码风格的优劣。编程不读&lt;&lt;代码大全&gt;&gt; ，枉做程序员。</p>
+
+<p>代码风格分类一般是按照变量和函数的命名方式来分的。一般有匈牙利命名法（dwTotalCount），骆驼命名法（totalCount），帕斯卡（pascal）命名法（TotalCount），下划线命名法（total_count）四种。</p>
+
+<p>代码风格另一种分类方式是按大括号的位置来分的，一般分为紧凑型，宽松型。</p>
+
+<p>举个例子：</p>
+
+<p>宽松型</p>
+
+<pre class=" language-objectivec" data-language="Objective-C"><code class=" language-objectivec"><span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>gotData<span class="token punctuation">)</span><span class="token lf">
+</span><span class="token punctuation">{</span><span class="token lf">
+</span>   <span class="token comment" spellcheck="true">// …</span><span class="token lf">
+</span><span class="token punctuation">}</span><span class="token lf">
+</span><span class="token keyword keyword-else">else</span><span class="token lf">
+</span><span class="token punctuation">{</span><span class="token lf">
+</span>   <span class="token comment" spellcheck="true">// …</span><span class="token lf">
+</span><span class="token punctuation">}</span><span class="token lf">
+</span> </code></pre>
+
+<p>紧凑型</p>
+
+<pre class=" language-objectivec" data-language="Objective-C"><code class=" language-objectivec"><span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>gotData<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// …</span><span class="token lf">
+</span><span class="token punctuation">}</span> <span class="token keyword keyword-else">else</span> <span class="token punctuation">{</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// …</span><span class="token lf">
+</span><span class="token punctuation">}</span><span class="token lf">
+</span> </code></pre>
+
+<p>微软一般都用宽松型，我刚编程那会用的VC6，都是宽松型的，因此先入为主的认为所有代码都应该是宽松型的。当时看开源代码都不习惯，因为开源代码一般都是紧凑型的。紧凑型的好处明显易见 —— 一屏显示的代码更多。</p>
+
+<p><b>二，代码风格的优劣</b></p>
+
+<p>什么样的代码风格是最好的？</p>
+
+<p>基于一些现实的原因，没有一份代码风格能声称自己是最好的。比如说，你觉得谷歌的objc 代码风格很好，但是它的缩进是2 个空格而不是4 个空格的，有人不习惯，看着就别扭。另外，对于代码风格意识不强的程序员，看到洋洋洒洒那么多规定，他只能说“臣妾办不到啊”。</p>
+
+<p>虽然如此你还是能拟出一份适合你的团队的代码风格，制定代码风格就像娶老婆，适合的就是最好的。</p>
+
+<p>那么好的代码风格都有什么特征呢？</p>
+
+<p>1.好的代码风格是统一的。统一意味着去个性化，随便找一段代码都分不清是团队里某个成员写的；相反的如果你能一下子就分辨某段代码是某个人写的，那就和这个原则背道而驰了。</p>
+
+<p>2.好的代码风格容易遵守。如果团队代码风格意识都很强那么你可以多规定一些内容，如果不那么强那么你只能强制基本的东西，其他的可以定义为建议。这点非常重要，如果某个规定给团队带来的成本太高，那么这个规定注定会被抛弃。</p>
+
+<p>3.好的代码风格是强制的。某些规定往往栽倒在人性的弱点里，这个弱点是懒。好的代码风格必须要有某种强制，可以是人工代码审查，提交前自动检查，或者领导者的三令五申来强制实施。前端代码每日提交量很高，少数人的不遵守规则，足以让规定破产。</p>
+
+<p>4.好的代码风格是和平台相关的。如果你为Windows 平台写代码，那你应该用宽松型的匈牙利命名法。如果你为Mac，iOS，Linux，Unix 写代码，那你应该用紧凑型的命名法。入乡随俗很重要。</p>
+
+<p>5.好的代码风格让代码更容易被阅读，被理解，被重构。</p>
+
+<p><b>三，推荐的objc 代码风格</b></p>
+
+<p>1.主要风格</p>
+
+<p>下边是Xcode 生成的代码，是紧凑型的骆驼命名法，因此我们最好和它保持一致。</p>
+
+<pre class=" language-objectivec" data-language="Objective-C"><code class=" language-objectivec"><span class="token comment" spellcheck="true">//</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//  ViewController.m</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//  test</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//  Created by test on 15/9/30.</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//  Copyright © 2015年 test. All rights reserved.</span><span class="token lf">
+</span><span class="token comment" spellcheck="true">//</span><span class="token lf">
+</span> <span class="token lf">
+</span><span class="token macro property">#import "ViewController.h"</span><span class="token lf">
+</span> <span class="token lf">
+</span><span class="token keyword keyword-@interface">@interface</span> ViewController <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token lf">
+</span> <span class="token lf">
+</span><span class="token keyword keyword-@end">@end</span><span class="token lf">
+</span> <span class="token lf">
+</span><span class="token keyword keyword-@implementation">@implementation</span> ViewController<span class="token lf">
+</span> <span class="token lf">
+</span><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>viewDidLoad <span class="token punctuation">{</span><span class="token lf">
+</span>    <span class="token punctuation">[</span><span class="token keyword keyword-super">super</span> viewDidLoad<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// Do any additional setup after loading the view, typically from a nib.</span><span class="token lf">
+</span><span class="token punctuation">}</span><span class="token lf">
+</span> <span class="token lf">
+</span><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>didReceiveMemoryWarning <span class="token punctuation">{</span><span class="token lf">
+</span>    <span class="token punctuation">[</span><span class="token keyword keyword-super">super</span> didReceiveMemoryWarning<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// Dispose of any resources that can be recreated.</span><span class="token lf">
+</span><span class="token punctuation">}</span><span class="token lf">
+</span> <span class="token lf">
+</span><span class="token keyword keyword-@end">@end</span><span class="token lf">
+</span> </code></pre>
+
+<p>2.块</p>
+
+<p>大多数程序设计语言里，代码块指的是一对大括号包围起来的代码。</p>
+
+<p>这里的块是指逻辑意义上的块。</p>
+
+<p>举个例子:</p>
+
+<pre class=" language-objectivec" data-language="Objective-C"><code class=" language-objectivec"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>getData<span class="token punctuation">:</span><span class="token punctuation">(</span>NSDictionary <span class="token operator">*</span><span class="token punctuation">)</span>parameter <span class="token punctuation">{</span><span class="token lf">
+</span>    <span class="token keyword keyword-int">int</span>  libraryId <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>parameter objectForKey<span class="token punctuation">:</span><span class="token string">@"libraryId"</span><span class="token punctuation">]</span> intValue<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>    NSNumber <span class="token operator">*</span>jobId <span class="token operator">=</span> nil<span class="token punctuation">;</span><span class="token lf">
+</span>    id  jobObj <span class="token operator">=</span> <span class="token punctuation">[</span>_statuDictionary objectForKey<span class="token punctuation">:</span><span class="token string">@"jobId"</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token punctuation">[</span>jobObj isKindOfClass<span class="token punctuation">:</span><span class="token punctuation">[</span>NSNumber class<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token lf">
+</span>        jobId <span class="token operator">=</span> <span class="token punctuation">(</span>NSNumber <span class="token operator">*</span><span class="token punctuation">)</span>jobObj<span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token punctuation">}</span><span class="token lf">
+</span>    <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>jobId<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token lf">
+</span>        <span class="token punctuation">[</span><span class="token keyword keyword-self">self</span> cancalJobById<span class="token punctuation">:</span>jobId<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token punctuation">}</span><span class="token lf">
+</span>    <span class="token keyword keyword-int">int</span> newJobId <span class="token operator">=</span> <span class="token function">GetData</span><span class="token punctuation">(</span>libraryId<span class="token punctuation">,</span> CallbackGetData<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token punctuation">[</span>_statuDictionary setValue<span class="token punctuation">:</span>newJobId forKey<span class="token punctuation">:</span><span class="token string">@"jobId"</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span>    …<span class="token punctuation">.</span><span class="token lf">
+</span><span class="token punctuation">}</span><span class="token lf">
+</span></code></pre>
+
+<p>可以用空行把这个函数分成两个块</p>
+
+<pre class=" language-objectivec" data-language="Objective-C"><code class=" language-objectivec"><span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span>getData<span class="token punctuation">:</span><span class="token punctuation">(</span>NSDictionary <span class="token operator">*</span><span class="token punctuation">)</span>parameter <span class="token punctuation">{</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// 块1，先取消上一次的job</span><span class="token lf">
+</span>    NSNumber <span class="token operator">*</span>jobId <span class="token operator">=</span> nil<span class="token punctuation">;</span><span class="token lf">
+</span>    id  jobObj <span class="token operator">=</span> <span class="token punctuation">[</span>_statuDictionary objectForKey<span class="token punctuation">:</span><span class="token string">@"jobId"</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token punctuation">[</span>jobObj isKindOfClass<span class="token punctuation">:</span><span class="token punctuation">[</span>NSNumber class<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token lf">
+</span>        jobId <span class="token operator">=</span> <span class="token punctuation">(</span>NSNumber <span class="token operator">*</span><span class="token punctuation">)</span>jobObj<span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token punctuation">}</span><span class="token lf">
+</span>    <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>jobId<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token lf">
+</span>        <span class="token function">CancalJobById</span><span class="token punctuation">(</span>jobId<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token punctuation">}</span><span class="token lf">
+</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// 块2， 创建一个新的job</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// 因为libraryId 这个变量在这个块里才用到，所以把它挪到这里，实际上缩小了它逻辑意义上的生存周期。</span><span class="token lf">
+</span>    <span class="token comment" spellcheck="true">// 变量使用到才定义，我管这个叫懒人法则。</span><span class="token lf">
+</span>    <span class="token keyword keyword-int">int</span>  libraryId <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>parameter objectForKey<span class="token punctuation">:</span><span class="token string">@"libraryId"</span><span class="token punctuation">]</span> intValue<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token keyword keyword-int">int</span> newJobId <span class="token operator">=</span> <span class="token function">GetData</span><span class="token punctuation">(</span>libraryId<span class="token punctuation">,</span> CallbackGetData<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token lf">
+</span>    <span class="token punctuation">[</span>_statuDictionary setValue<span class="token punctuation">:</span>newJobId forKey<span class="token punctuation">:</span><span class="token string">@"jobId"</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token lf">
+</span><span class="token lf">
+</span>    …<span class="token punctuation">.</span><span class="token lf">
+</span><span class="token punctuation">}</span><span class="token lf">
+</span></code></pre>
+
+<p>另外，在函数之间，类之间合理加空行，善待你我的双眼。 </p>
+
+<p>合理使用#pragma mark - 把同类函数分块，便于查找和阅读代码。</p>
+
+<p>3.注释</p>
+
+<p>只写必要的注释，如用于生成文档的注释，说明复杂算法或思路，要注意的问题，容易犯的错误等</p>
+
+<p>屏蔽代码应当使用宏，而不是把代码注释掉</p>
+
+<p>4.其他</p>
+
+<p>其他的部分可以从苹果，谷歌等大公司的代码风格里摘录，重要的是团队里的成员一致认可这些规定。</p>
+
+<p><b>四，最佳实践 </b></p>
+
+<p>这里我介绍一下现在我们在用的一套流程。</p>
+
+<p>我们主要依靠Xcode 的BBUncrustifyPlugin 插件来保证代码风格的实施。</p>
+
+<p>BBUncrustifyPlugin&nbsp;是一个代码格式化插件。你可以通过阿卡拉（Alcatraz）插件来安装BBUncrustifyPlugin 插件。阿卡拉本身也是一个Xcode 插件，它的主要功能是管理其他Xcode 插件。 </p>
+
+<p>BBUncrustifyPlugin插件支持自定义代码风格，可以通过<a href="https://github.com/ryanmaxwell/UncrustifyX">UncrustifyX</a> 编辑。我们在用的代码风格在<a href="https://github.com/xiezhuangping/uncrustify_config">这里</a>，不过目前它还不是很完善。</p>
+
+<p>主要的流程如下：</p>
+
+<p>第一步，你需要合并分支，稳定代码，找一个合适的时机开始。</p>
+
+<p>第二步，如果安装了其他代码风格插件如ClangFormat 等需要先卸载，以便避免和BBUncrustifyPlugin 冲突。</p>
+
+<p>第三步，安装和配置BBUncrustifyPlugin 插件。</p>
+
+<p>1.先运行以下命令安装阿卡拉插件</p>
+
+<pre class=" language-objectivec" data-language="Objective-C"><code class=" language-objectivec">curl <span class="token operator">-</span>fsSL https<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>raw<span class="token punctuation">.</span>githubusercontent<span class="token punctuation">.</span>com<span class="token operator">/</span>supermarin<span class="token operator">/</span>Alcatraz<span class="token operator">/</span>deploy<span class="token operator">/</span>Scripts<span class="token operator">/</span>install<span class="token punctuation">.</span>sh <span class="token operator">|</span> sh<span class="token lf">
+</span></code></pre>
+
+<p>2.重启Xcode，在弹出的提示框选择允许加载插件，然后选择Xcode 菜单项 Window &gt; Package Manager，在弹出窗里找到BBUncrustifyPlugin 安装即可。</p>
+
+<p>3.选择Xcode 菜单项 Edit &gt; Format Code &gt; BBUncrustifyPluginRefrences…
+在弹出的对话框里，修改以下设置项</p>
+
+<p><img src="https://raw.githubusercontent.com/xiezhuangping/xiezhuangping.github.io/master/img/uncrustify_config.png" alt="uncrustify_config"></p>
+
+<p><b>特别注意勾选"Perform Format on Save of a Source code File"，这个选项很重要，我们依赖它来纠正不合规范的代码。</b> </p>
+
+<p>4.拷贝Uncrustify 配置文件uncrustify.cfg 到目录~/.uncrustify/ 下。</p>
+
+<p>第四步，使用Uncrustify 插件格式化所有代码，然后提交。</p>
+
+<p>1.先在Xcode 左侧的文件视图面板里选择所有的源代码文件，然后选择Xcode 菜单项 Edit &gt; Format Code &gt; Format Selected Files 即可格式化所有代码。</p>
+
+<p>2.提交到svn 或者git。</p>
+
+<p>这一步很有必要，如果不这么做，以后的每一次提交都可能会包含代码风格的变化。</p>
+
+<p>按照这个流程，每当小组内有不合规范的代码风格出现时，会被自动纠正。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "ios_code_style";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
